@@ -3,7 +3,7 @@ import Button from "@/components/UI/button";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+ 
 const Login = () => {
   const router = useRouter();
   const [error, setError] = useState("");

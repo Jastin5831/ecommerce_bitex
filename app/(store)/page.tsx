@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 import styles from "./page.module.scss";
-
+ 
 import HomeCategoryList from "@/components/store/home/categories";
 import HomeSlider from "@/components/store/home/slider";
 import TodayDealCard from "@/components/store/home/todayDealCard";

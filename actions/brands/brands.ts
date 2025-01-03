@@ -71,3 +71,4 @@ export const updateBrand = async (data: TBrand) => {
     return { error: JSON.stringify(error) };
   }
 };
+ 

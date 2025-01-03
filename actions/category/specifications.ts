@@ -8,7 +8,7 @@ export const getCategorySpecs = async (categoryID: string) => {
   const specifications: SpecGroup[] = [];
   let shouldRepeat = true;
   let catIdToSearch: string | null = categoryID;
-
+ 
   const getSpecsAndParentID = async (catID: string) => {
     const result = await db.category.findFirst({
       where: {

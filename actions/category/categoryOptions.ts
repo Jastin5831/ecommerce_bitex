@@ -148,7 +148,7 @@ export const deleteSingleOption = async (data: TSingleOption) => {
 };
 
 // ------------------------- SPECIFICATIONS -------------------------
-
+ 
 export const getSpecGroupByCatID = async (categoryID: string) => {
   if (!categoryID || categoryID === "") return { error: "Invalid Data!" };
 

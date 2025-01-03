@@ -1,0 +1,146 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  parentID String? @db.ObjectId
+
+  name               String
+  url                String
+  iconUrl            String?
+  iconSize           Int[]
+  Category_Option    Category_OptionSet[]
+  Category_SpecGroup Category_SpecGroup[]
+  products           Product[]
+}
+
+model Category_OptionSet {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  option     OptionSet @relation(fields: [optionID], references: [id], onDelete: Cascade)
+  optionID   String    @db.ObjectId
+  category   Category  @relation(fields: [categoryID], references: [id])
+  categoryID String    @db.ObjectId
+
+  @@unique([optionID, categoryID])
+}
+
+model OptionSet {
+  id              String               @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  options         NameValue[]
+  type            OptionSetType
+  Category_Option Category_OptionSet[]
+}
+
+type NameValue {
+  name  String
+  value String
+}
+
+model Category_SpecGroup {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  specGroup   SpecGroup @relation(fields: [specGroupID], references: [id], onDelete: Cascade)
+  specGroupID String    @db.ObjectId
+  category    Category  @relation(fields: [categoryID], references: [id])
+  categoryID  String    @db.ObjectId
+
+  @@unique([specGroupID, categoryID])
+}
+
+model SpecGroup {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  title              String
+  specs              String[]
+  Category_SpecGroup Category_SpecGroup[]
+}
+
+enum OptionSetType {
+  TEXT
+  COLOR
+}
+
+model Product {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  isAvailable     Boolean       @default(true)
+  desc            String?
+  specialFeatures String[]
+  images          String[]
+  category        Category      @relation(fields: [categoryID], references: [id])
+  categoryID      String        @db.ObjectId
+  optionSets      String[]      @db.ObjectId
+  price           Float
+  salePrice       Float?
+  specs           ProductSpec[]
+  brand           Brand         @relation(fields: [brandID], references: [id])
+  brandID         String        @db.ObjectId
+  PageVisit       PageVisit[]
+}
+
+type ProductSpec {
+  specGroupID String
+  specValues  String[]
+}
+
+model Brand {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  name     String    @unique
+  products Product[]
+}
+
+model PageVisit {
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  time             DateTime? @default(now())
+  pageType         PageType
+  pagePath         String?
+  deviceResolution String?
+  productID        String?   @db.ObjectId
+  product          Product?  @relation(fields: [productID], references: [id])
+}
+
+enum PageType {
+  MAIN
+  LIST
+  PRODUCT
+}
+
+// ---------------------- USER MANAGEMENT SECTION ---------------------- 
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?   @unique
+  emailVerified  DateTime?
+  hashedPassword String?
+  image          String?
+  accounts       Account[]
+}

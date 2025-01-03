@@ -11,7 +11,7 @@ const GetAllCategories = z.object({
   iconSize: z.array(z.number().int()),
   iconUrl: z.string().min(3).nullable(),
 });
-
+ 
 const AddCategory = z.object({
   parentID: z.string().min(6).nullable(),
   name: z.string().min(3),

@@ -10,7 +10,7 @@ import {
   TSpecification,
 } from "@/types/product";
 import { ProductSpec } from "@prisma/client";
-
+ 
 const ValidateAddProduct = z.object({
   name: z.string().min(3),
   brandID: z.string().min(6),

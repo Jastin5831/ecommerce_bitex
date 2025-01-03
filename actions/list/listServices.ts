@@ -8,7 +8,7 @@ const ValidateSort = z.object({
   sortName: z.enum(["id", "price", "name"]),
   sortType: z.enum(["asc", "desc"]),
 });
-
+ 
 export const getList = async (
   path: string,
   sortData: TListSort,

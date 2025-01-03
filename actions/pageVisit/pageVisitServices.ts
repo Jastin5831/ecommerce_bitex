@@ -7,7 +7,7 @@ import { PageType } from "@prisma/client";
 const ValidatePageVisit = z.object({
   pageType: z.enum(["MAIN", "LIST", "PRODUCT"]),
 });
-
+ 
 export type TTrafficListItem = {
   id: string;
   time: Date | null;
